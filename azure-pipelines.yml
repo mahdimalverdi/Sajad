@@ -37,7 +37,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'SajadFront/dist'
+    SourceFolder: 'SajadFront/dist/SajadFront'
     Contents: '**'
     TargetFolder: 'Sajad/wwwroot'
     
