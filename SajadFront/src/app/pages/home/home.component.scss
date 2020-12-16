@@ -1,0 +1,26 @@
+.home{
+  margin: auto auto;
+  width: 900px;
+  max-width: 100%;
+  text-align: justify;
+  text-align-last: center;
+
+  &__title{
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  &__content{
+    margin-top: 20px;
+    font-size: 1.25em;
+    line-height: 2em;
+  }
+
+  &__logo{
+    width: 200px;
+    max-width: 80%;
+    margin: 50px 0;
+  }
+}
+

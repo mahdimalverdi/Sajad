@@ -1,0 +1,28 @@
+@import "assets/fonts/fontiran.css";
+@import "assets/FontAwesome.Pro.5.13.0.Web/css/all.css";
+
+body * {
+  font-family: dana !important;
+}
+
+.mat-raised-button {
+  border-radius: 2rem !important;
+}
+
+.mat-stroked-button {
+  border-radius: 2rem !important;
+}
+
+.k-icon {
+  font-family: "WebComponentsIcons" !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.k-grid {
+  min-width: 900px;
+}
+
+
