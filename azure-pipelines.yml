@@ -26,20 +26,20 @@ steps:
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: 'SajadFront/SajadFront'
+    workingDir: 'SajadFront'
     
     
 - task: Npm@1
   inputs:
     command: 'custom'
-    workingDir: 'SajadFront/SajadFront'
+    workingDir: 'SajadFront'
     customCommand: 'run build'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'SajadFront/SajadFront/dist'
+    SourceFolder: 'SajadFront/dist'
     Contents: '**'
-    TargetFolder: 'Sajad/Sajad/wwwroot'
+    TargetFolder: 'Sajad/wwwroot'
     
 - task: UseDotNet@2
   inputs:
