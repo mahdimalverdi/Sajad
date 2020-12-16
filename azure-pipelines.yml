@@ -1,0 +1,62 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+    
+steps:
+
+- task: RestoreAndSaveCache@1
+  inputs:
+    keyfile: '**/package-lock.json, !**/node_modules/**/package-lock.json'
+    targetfolder: '**/node_modules, !**/node_modules/**/node_modules'
+    vstsFeed: 'e8e4ec96-6001-41da-86cb-0ab6d463d3f4'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'SajadFront'
+    
+    
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'SajadFront'
+    customCommand: 'run build'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'SajadFront/dist'
+    Contents: '**'
+    TargetFolder: 'Sajad/wwwroot'
+    
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.x'
+
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    publishLocation: 'pipeline'
