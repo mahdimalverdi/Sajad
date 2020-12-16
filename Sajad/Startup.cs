@@ -52,6 +52,7 @@ namespace Sajad
             services.AddScoped<IContentManager, ContentManager>();
             services.AddScoped<IParaghraphRepository, ParaghraphRepository>();
             services.AddScoped<IParaghraphManager, ParaghraphManager>();
+            services.AddScoped<IQuestionManager, QuestionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

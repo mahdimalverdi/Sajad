@@ -1,5 +1,6 @@
 ﻿using Abstraction.Managers;
 using Abstraction.Models;
+using Abstraction.Models.Output;
 using Abstraction.Repositories;
 using Business.Adapters;
 using Business.Serializer;
@@ -34,17 +35,38 @@ namespace Sajad.Controllers
                 return Content("file not selected");
 
             var stream = file.OpenReadStream();
-            await contentManager.UploadFileAsync(stream).ConfigureAwait(false);
+            var serializer = new InputContentSerializer(stream);
+            var content = await serializer.DeserializeAsync().ConfigureAwait(false);
+            var documents = content.Data.Select(GetDocument);
+
+            await contentManager.AddRangeAsync(documents).ConfigureAwait(false);
 
             return Ok();
+        }
+
+        private Document GetDocument(InputDocument document)
+        {
+            return new DocumentAdapter(document).GetDocument();
         }
 
         [HttpGet]
         public async Task<FileStreamResult> DownloadFileAsync()
         {
-            var stream = await contentManager.DownloadFileAsync().ConfigureAwait(false);
+            var content = await contentManager.GetContent().ConfigureAwait(false);
+
+            var adapter = new OutputContentAdapter(content);
+            var outputContent = adapter.Get();
+
+            var stream = await Serialize(outputContent).ConfigureAwait(false);
 
             return File(stream, ContentType, FileDownloadName);
+        }
+
+        private static async Task<Stream> Serialize(OutputContent content)
+        {
+            var serializer = new OutputContentSerializer(content);
+            var stream = await serializer.SerializeAsync().ConfigureAwait(false);
+            return stream;
         }
     }
 }

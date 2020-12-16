@@ -1,4 +1,5 @@
-﻿using Abstraction.Models;
+﻿using Abstraction.Managers;
+using Abstraction.Models;
 using Abstraction.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Sajad.Models;
@@ -13,11 +14,11 @@ namespace Sajad.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionRepository questionRepository;
+        private readonly IQuestionManager questionManager;
 
-        public QuestionsController(IQuestionRepository questionRepository)
+        public QuestionsController(IQuestionManager questionManager)
         {
-            this.questionRepository = questionRepository ?? throw new ArgumentNullException(nameof(questionRepository));
+            this.questionManager = questionManager ?? throw new ArgumentNullException(nameof(questionManager));
         }
 
         [HttpPost]
@@ -28,9 +29,7 @@ namespace Sajad.Controllers
                 return BadRequest(ModelState);
             }
 
-            await questionRepository
-                .AddAsync(viewModel.ParagraphId, viewModel.Questions)
-                .ConfigureAwait(false);
+            await questionManager.AddRangeAsync(viewModel.ParagraphId, viewModel.Questions).ConfigureAwait(false);
 
             return Ok();
         }

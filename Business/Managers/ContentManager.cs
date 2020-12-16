@@ -22,37 +22,12 @@ namespace Business.Managers
             this.documentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         }
 
-        public async Task UploadFileAsync(Stream stream)
+        public async Task AddRangeAsync(IEnumerable<Document> documents)
         {
-            var serializer = new InputContentSerializer(stream);
-            var content = await serializer.DeserializeAsync().ConfigureAwait(false);
-            var documents = content.Data.Select(GetDocument);
             await documentRepository.AddRangeAsync(documents).ConfigureAwait(false);
         }
 
-        private Document GetDocument(InputDocument document)
-        {
-            return new DocumentAdapter(document).GetDocument();
-        }
-
-        public async Task<Stream> DownloadFileAsync()
-        {
-            var content = await GetContent().ConfigureAwait(false);
-
-            var adapter = new OutputContentAdapter(content);
-            var outputContent = adapter.Get();
-
-            return await Serialize(outputContent).ConfigureAwait(false);
-        }
-
-        private static async Task<Stream> Serialize(OutputContent content)
-        {
-            var serializer = new OutputContentSerializer(content);
-            var stream = await serializer.SerializeAsync().ConfigureAwait(false);
-            return stream;
-        }
-
-        private async Task<Content> GetContent()
+        public async Task<Content> GetContent()
         {
             var documents = await documentRepository.GetAllAsync().ConfigureAwait(false);
             var content = new Content() { Data = documents.ToList() };
