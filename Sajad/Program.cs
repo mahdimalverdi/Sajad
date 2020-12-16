@@ -21,10 +21,10 @@ namespace Sajad
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                        .UseKestrel(options =>
-                        {
-                            options.Limits.MaxRequestBodySize = long.MaxValue;
-                        });
+                        /* .UseKestrel(options =>
+                         {
+                             options.Limits.MaxRequestBodySize = long.MaxValue;
+                         })*/;
                 });
     }
 }
