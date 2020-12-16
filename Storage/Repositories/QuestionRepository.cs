@@ -19,11 +19,8 @@ namespace Storage.Repositories
 
         public async Task AddAsync(string paraphId, IEnumerable<QuestionStruct> questions)
         {
-            foreach (var question in questions)
-            {
-                var command = new AddCommand(paraphId, question, client);
-                await command.ExecuteAsync().ConfigureAwait(false);
-            }
+            var command = new AddCommand(paraphId, client, questions);
+            await command.ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

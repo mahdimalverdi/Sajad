@@ -1,84 +1,91 @@
-<div class="add-question">
-  <mat-card class="add-question__card">
-    <h1>{{ paragraph.title }}</h1>
-    <p id="context" class="add-question__content">
-      {{ paragraph.context }}
-    </p>
-  </mat-card>
-  <mat-card class="add-question__card">
-    <form id="add-question" (submit)="addNewQuestion()" [formGroup]="form">
-      <mat-form-field appearance="legacy">
-        <input formControlName="question" matInput placeholder="سوال" />
-        <mat-error *ngIf="form?.controls?.question?.errors?.required"
-          >سوال نمی‌تواند خالی باشد</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field appearance="legacy">
-        <textarea
-          class="add-question__textarea"
-          formControlName="answer"
-          matInput
-          placeholder="پاسخ"
-          readonly
-        ></textarea>
-        <mat-error *ngIf="form?.controls?.answer?.errors?.required"
-          >پاسخ نمی‌تواند خالی باشد</mat-error
-        >
-      </mat-form-field>
-      <!-- <mat-checkbox>این سوال، یک سوال بی پاسخ است</mat-checkbox> -->
-    </form>
-    <mat-card-actions>
-      <button
-        type="submit"
-        mat-raised-button
-        color="accent"
-        form="add-question"
-      >
-        افزودن سوال
-      </button>
-    </mat-card-actions>
-  </mat-card>
-  <mat-card class="add-question__card">
-    <h1>سوالات</h1>
-    <ng-container *ngIf="addQuestion.questions.length !== 0">
-      <mat-accordion>
-        <mat-expansion-panel
-          *ngFor="let question of addQuestion.questions; let i = index"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ question.question }}
-            </mat-panel-title>
-            <mat-panel-description class="add-question__description">
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <strong>پاسخ‌ها:</strong>
-          <p *ngFor="let answer of question.answers">
-            {{ answer.text }}
-          </p>
-          <mat-action-row>
-            <button mat-stroked-button color="warn" (click)="remove(i)">
-              حذف
-            </button>
-          </mat-action-row>
-        </mat-expansion-panel>
-      </mat-accordion>
+<ng-container [ngSwitch]="state">
+  <div class="add-question">
+    <ng-container *ngSwitchCase="'ready'">
+      <mat-card class="add-question__card">
+        <h1>{{ paragraph.title }}</h1>
+        <p id="context" class="add-question__content">
+          {{ paragraph.context }}
+        </p>
+      </mat-card>
+      <mat-card class="add-question__card">
+        <form id="add-question" (submit)="addNewQuestion()" [formGroup]="form">
+          <mat-form-field appearance="legacy">
+            <input formControlName="question" matInput placeholder="سوال" />
+            <mat-error *ngIf="form?.controls?.question?.errors?.required"
+              >سوال نمی‌تواند خالی باشد</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="legacy">
+            <textarea
+              class="add-question__textarea"
+              formControlName="answer"
+              matInput
+              placeholder="پاسخ"
+              readonly
+            ></textarea>
+            <mat-error *ngIf="form?.controls?.answer?.errors?.required"
+              >پاسخ نمی‌تواند خالی باشد</mat-error
+            >
+          </mat-form-field>
+          <!-- <mat-checkbox>این سوال، یک سوال بی پاسخ است</mat-checkbox> -->
+        </form>
+        <mat-card-actions>
+          <button
+            type="submit"
+            mat-raised-button
+            color="accent"
+            form="add-question"
+          >
+            افزودن سوال
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card class="add-question__card">
+        <h1>سوالات</h1>
+        <ng-container *ngIf="addQuestion.questions.length !== 0">
+          <mat-accordion>
+            <mat-expansion-panel
+              *ngFor="let question of addQuestion.questions; let i = index"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ question.question }}
+                </mat-panel-title>
+                <mat-panel-description class="add-question__description">
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <strong>پاسخ‌ها:</strong>
+              <p *ngFor="let answer of question.answers">
+                {{ answer.text }}
+              </p>
+              <mat-action-row>
+                <button mat-stroked-button color="warn" (click)="remove(i)">
+                  حذف
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+        <ng-container *ngIf="addQuestion.questions.length === 0">
+          هیچ سوالی وجود ندارد
+        </ng-container>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="addQuestion.questions.length === 0"
+            (click)="submit()"
+          >
+            ثبت سوالات
+          </button>
+          <button mat-stroked-button color="warn" (click)="nextParagraph()">
+            رد کردن
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </ng-container>
-    <ng-container *ngIf="addQuestion.questions.length === 0">
-      هیچ سوالی وجود ندارد
+    <ng-container *ngSwitchCase="'loading'">
+      <app-loading></app-loading>
     </ng-container>
-    <mat-card-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="addQuestion.questions.length === 0"
-        (click)="submit()"
-      >
-        ثبت سوالات
-      </button>
-      <button mat-stroked-button color="warn" (click)="nextParagraph()">
-        رد کردن
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+  </div>
+</ng-container>

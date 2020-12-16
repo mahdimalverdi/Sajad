@@ -10,10 +10,10 @@ namespace Storage.Repositories.QuestionCommands
     internal class AddCommand
     {
         private readonly string paraphId;
-        private readonly QuestionStruct question;
+        private readonly IEnumerable<QuestionStruct> questions;
         private const string Field = "paragraphs.id";
         private const string IdKey = "id";
-        private const string QuestionKey = "question";
+        private const string QuestionKey = "questions";
         private readonly ElasticClient client;
 
         private static readonly string script = @"
@@ -23,17 +23,23 @@ namespace Storage.Repositories.QuestionCommands
                     {
                         if(ctx._source.paragraphs[i].questions == null)
                         {
-                            ctx._source.paragraphs[i].questions = [];
+                            ctx._source.paragraphs[i].questions = params.questions;
+                        } 
+                        else 
+                        {
+                            for (int j = 0; j<params.questions.size(); j++)
+                            {
+                                ctx._source.paragraphs[i].questions.add(params.questions[j]);
+                            }
                         }
-                        ctx._source.paragraphs[i].questions.add(params.question);
                     }
                 }";
 
-        public AddCommand(string paraphId, QuestionStruct question, ElasticClient client)
+        public AddCommand(string paraphId, ElasticClient client, IEnumerable<QuestionStruct> questionStructs)
         {
             this.paraphId = paraphId ?? throw new ArgumentNullException(nameof(paraphId));
-            this.question = question ?? throw new ArgumentNullException(nameof(question));
             this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.questions = questionStructs ?? throw new ArgumentNullException(nameof(questionStructs));
         }
 
         public async Task ExecuteAsync()
@@ -46,7 +52,7 @@ namespace Storage.Repositories.QuestionCommands
             var scriptParams = new Dictionary<string, object>
             {
                 { IdKey, paraphId },
-                { QuestionKey, question }
+                { QuestionKey, questions }
             };
             return descriptor.Source(script).Params(scriptParams);
         }

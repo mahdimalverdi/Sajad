@@ -38,6 +38,8 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
+  public state: string = 'loading';
+
   public paragraph: QuestionContent = {
     context: '',
     paragraphId: '',
@@ -52,7 +54,7 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
   public readonly answerSubject: Subject<any>;
   public form: FormGroup = new FormGroup({
     question: new FormControl(null, [Validators.required]),
-    answer:  new FormControl(null, [Validators.required])
+    answer: new FormControl(null, [Validators.required])
   });
 
   constructor(
@@ -61,21 +63,23 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
     this.answerSubject = new Subject();
   }
 
-  ngAfterViewInit(): void {
+  public async ngAfterViewInit(): Promise<void> {
     document.onselectionchange = this.select;
+    await this.nextParagraph();
   }
 
   public async ngOnInit() {
     this.answerSubject.subscribe((selection) => this.setVariables(selection));
     this.setSubject();
-    await this.nextParagraph();
   }
 
   public async nextParagraph() {
+    this.state = 'loading';
     this.paragraph = await this.service.getNextParagraph();
     this.addQuestion = new AddQuestion();
     this.addQuestion.paragraphId = this.paragraph.paragraphId;
     this.resetVariables();
+    this.state = 'ready';
   }
 
   private setSubject() {
@@ -113,10 +117,11 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
 
   private resetVariables() {
     this.offset = 0;
-    this.formGroupDirective.resetForm();
+    this.formGroupDirective?.resetForm();
   }
 
   public async submit() {
+    this.state = 'loading';
     await this.questionService.Add(this.addQuestion);
     await this.nextParagraph();
   }

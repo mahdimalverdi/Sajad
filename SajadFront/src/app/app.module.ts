@@ -19,13 +19,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdminComponent } from './pages/admin/admin.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AddQuestionComponent,
-    AdminComponent
+    AdminComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
