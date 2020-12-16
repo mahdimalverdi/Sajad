@@ -26,13 +26,13 @@ steps:
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: 'SajadFront\SajadFront'
+    workingDir: 'SajadFront/SajadFront'
     
     
 - task: Npm@1
   inputs:
     command: 'custom'
-    workingDir: 'SajadFront\SajadFront'
+    workingDir: 'SajadFront/SajadFront'
     customCommand: 'run build'
 
 - task: CopyFiles@2
