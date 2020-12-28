@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace Sajad.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class ContentsController : ControllerBase
     {
         private const string ContentType = "application/json";

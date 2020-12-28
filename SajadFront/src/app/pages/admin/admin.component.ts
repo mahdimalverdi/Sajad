@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ContentService } from 'src/app/services/content.service';
 import { DocumentService } from 'src/app/services/document.service';
@@ -27,12 +28,14 @@ export class AdminComponent implements OnInit {
   public paraghraphCount = 0;
   public questionCount = 0;
   public token = '';
+  public users: User[] = [];
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.documentService.getCount().then(count => this.documentCount = count);
     this.paraghraphService.getCount().then(count => this.paraghraphCount = count);
     this.questionService.getCount().then(count => this.questionCount = count);
     this.token = 'Bearer ' + this.jwtTokenService.getToken();
+    this.users = await this.authenticationService.getUsers();
   }
 
   public async handleFileInput(event: any) {

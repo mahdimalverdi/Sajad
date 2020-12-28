@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sajad.Adapters;
 using Sajad.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Sajad.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
     public class AuthenticationController : ControllerBase
     {
         protected readonly IAuthenticationManager manager;
@@ -45,6 +46,28 @@ namespace Sajad.Controllers
         public async Task<IActionResult> LogoutAsync()
         {
             await this.manager.LogoutAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await manager.GetUsersAsync().ConfigureAwait(false);
+            var adapter = new UserViewModelAdapter(users);
+            return Ok(adapter.GetUsers());
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await manager.RegisterAsync(model.UserName, model.Password).ConfigureAwait(false);
             return Ok();
         }
     }

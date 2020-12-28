@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -58,7 +59,12 @@ namespace Business.Managers
 
         public async Task<IdentityUser> GetByUserNameAsync(string userName)
         {
-            return await userManager.Users.SingleOrDefaultAsync(u => u.UserName.ToLower().Equals(userName.ToLower()));
+            return await userManager.Users.SingleOrDefaultAsync(u => u.UserName.ToLower().Equals(userName.ToLower())).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<IdentityUser>> GetUsersAsync()
+        {
+            return await userManager.Users.ToListAsync().ConfigureAwait(false);
         }
 
         protected virtual SecurityToken GetToken(IdentityUser user)

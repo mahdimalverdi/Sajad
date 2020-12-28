@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Abstraction.Managers
@@ -10,6 +11,7 @@ namespace Abstraction.Managers
         Task ChangePasswordAsync(string userId, string password);
         Task ChangePasswordAsync(string userId, string currentPassword, string newPassword);
         Task<IdentityUser> GetByUserNameAsync(string userName);
+        Task<IEnumerable<IdentityUser>> GetUsersAsync();
         Task<string> LoginAsync(string userName, string password);
         Task LogoutAsync();
         Task RegisterAsync(string userName, string password);

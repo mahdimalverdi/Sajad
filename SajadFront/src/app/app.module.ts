@@ -24,8 +24,9 @@ import { CounterComponent } from './components/counter/counter.component';
 import { TokenInterceptor } from './interceptors/token-interceptor';
 import { UrlInterceptor } from './interceptors/url-interceptor';
 import { LoginComponent } from './pages/login/login.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatListModule } from '@angular/material/list';
+import { RegisterComponent } from './pages/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AdminComponent,
     LoadingComponent,
     CounterComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatTableModule,
     MatExpansionModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatListModule
   ],
   bootstrap: [AppComponent],
   providers: [
