@@ -6,7 +6,9 @@ namespace Abstraction.Models
 {
     public class Answer
     {
+        public string Id { get; set; }
         public string Text { get; set; }
         public int AnswerStart { get; set; }
+        public string QuestionStructId { get; set; }
     }
 }

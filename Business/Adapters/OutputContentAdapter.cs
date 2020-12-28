@@ -20,7 +20,7 @@ namespace Business.Adapters
         {
             return new OutputContent()
             {
-                Data = content.Data.Select(Get).Where(d => d.Paragraphs.Any()).ToList()
+                Data = content.Data.Select(Get).ToList()
             };
         }
 

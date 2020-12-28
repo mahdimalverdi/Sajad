@@ -1,5 +1,6 @@
 ﻿using Abstraction.Adapters;
 using Abstraction.Models;
+using Abstraction.Models.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Business.Adapters
 {
     public class DocumentAdapter : IDocumentAdapter
     {
-        private readonly InputDocument document;
+        private readonly OutputDocument document;
 
-        public DocumentAdapter(InputDocument document)
+        public DocumentAdapter(OutputDocument document)
         {
             this.document = document;
         }
@@ -26,7 +27,7 @@ namespace Business.Adapters
             };
         }
 
-        private Paragraph GetParagraph(InputParagraph paragraph)
+        private Paragraph GetParagraph(OutputParagraph paragraph)
         {
             return new ParagraphAdapter(paragraph).GetParagraph();
         }

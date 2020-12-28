@@ -44,7 +44,7 @@ namespace Sajad.Controllers
             return Ok();
         }
 
-        private Document GetDocument(InputDocument document)
+        private Document GetDocument(OutputDocument document)
         {
             return new DocumentAdapter(document).GetDocument();
         }

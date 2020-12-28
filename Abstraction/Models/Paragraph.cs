@@ -9,5 +9,6 @@ namespace Abstraction.Models
         public string Id { get; set; }
         public string Context { get; set; }
         public List<QuestionStruct> Questions { get; set; }
+        public string DocumentId { get; set; }
     }
 }

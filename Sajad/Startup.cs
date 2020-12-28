@@ -11,11 +11,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nest;
+using Storage;
 using Storage.Repositories;
 
 namespace Sajad
@@ -38,6 +41,12 @@ namespace Sajad
                 x.ValueLengthLimit = int.MaxValue;
                 x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
             });
+
+            var connectionString = new SqliteConnectionStringBuilder()
+            {
+                DataSource = "sajad.sqlite"
+            }.ConnectionString;
+            services.AddDbContext<SajadDbContext>(o => o.UseSqlite(connectionString));
 
             services.AddScoped((provider) =>
             {

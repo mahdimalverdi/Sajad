@@ -1,4 +1,5 @@
 ﻿using Abstraction.Models;
+using Abstraction.Models.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,14 +18,14 @@ namespace Business.Serializer
             this.stream = stream;
         }
 
-        public async Task<InputContent> DeserializeAsync()
+        public async Task<OutputContent> DeserializeAsync()
         {
             var options = new JsonSerializerOptions()
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
             };
 
-            var result = await JsonSerializer.DeserializeAsync<InputContent>(stream, options).ConfigureAwait(false);
+            var result = await JsonSerializer.DeserializeAsync<OutputContent>(stream, options).ConfigureAwait(false);
 
             return result;
         }
