@@ -12,6 +12,6 @@ export class ContentService {
   public async uploadFile(fileToUpload: File): Promise<any> {
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    return await this.client.post(environment.baseUrl + '/api/Contents/UploadFile', formData).toPromise();
+    return await this.client.post('/api/Contents/UploadFile', formData).toPromise();
   }
 }

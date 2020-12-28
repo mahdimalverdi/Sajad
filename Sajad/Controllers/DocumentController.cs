@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Sajad.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentManager documentManager;

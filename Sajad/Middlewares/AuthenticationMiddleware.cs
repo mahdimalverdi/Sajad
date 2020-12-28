@@ -23,7 +23,7 @@ namespace Sajad.Middlewares
         public async Task Invoke(HttpContext context)
         {
             //Reading the AuthHeader which is signed with JWT
-            string authHeader = context.Request.Cookies["authToken"];
+            string authHeader = context.Request.Query["authToken"];
 
             if (authHeader != null)
             {

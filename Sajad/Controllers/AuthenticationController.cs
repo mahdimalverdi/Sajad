@@ -33,10 +33,6 @@ namespace Sajad.Controllers
                 var token = await this.manager.LoginAsync(model.UserName, model.Password);
                 var result = new { token };
 
-                CookieOptions option = new CookieOptions();
-                option.Expires = DateTime.Now.AddDays(10);
-                Response.Cookies.Append("authToken", "Bearer " + token, option);
-
                 return Ok(result);
             }
             catch (Exception e)

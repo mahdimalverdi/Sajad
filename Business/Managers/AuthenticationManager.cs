@@ -65,7 +65,7 @@ namespace Business.Managers
         {
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Role, user.GetType().Name),
+                new Claim(ClaimTypes.Role, user.UserName),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim("Id", user.Id)
             };

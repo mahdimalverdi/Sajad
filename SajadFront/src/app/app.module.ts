@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { AddQuestionComponent } from './pages/add-question/add-question.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,6 +21,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AdminComponent } from './pages/admin/admin.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { CounterComponent } from './components/counter/counter.component';
+import { TokenInterceptor } from './interceptors/token-interceptor';
+import { UrlInterceptor } from './interceptors/url-interceptor';
+import { LoginComponent } from './pages/login/login.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,8 @@ import { CounterComponent } from './components/counter/counter.component';
     AddQuestionComponent,
     AdminComponent,
     LoadingComponent,
-    CounterComponent
+    CounterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -47,9 +52,21 @@ import { CounterComponent } from './components/counter/counter.component';
     FormsModule,
     MatTableModule,
     MatExpansionModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UrlInterceptor,
+      multi: true
+    }
+  ]
 })
 export class AppModule { }

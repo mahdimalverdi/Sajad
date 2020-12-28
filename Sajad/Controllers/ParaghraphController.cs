@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sajad.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ParaghraphController : ControllerBase
@@ -29,8 +30,8 @@ namespace Sajad.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public async Task<IActionResult> GetCountAsync()
         {
             var count = await paraghraphManager.GetCountAsync().ConfigureAwait(false);

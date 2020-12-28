@@ -1,19 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthorizeGuard } from './guards/authorize.guard';
 import { AddQuestionComponent } from './pages/add-question/add-question.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [{
   path: '',
   component: HomeComponent
 },
 {
   path: 'AddQuestion',
-  component: AddQuestionComponent
+  component: AddQuestionComponent,
+  canActivate: [AuthorizeGuard]
 },
 {
   path: 'Admin',
-  component: AdminComponent
+  component: AdminComponent,
+  canActivate: [AuthorizeGuard]
+},
+{
+  path: 'Login',
+  component: LoginComponent
 }];
 
 @NgModule({

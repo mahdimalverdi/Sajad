@@ -1,0 +1,46 @@
+<div class="sing-in">
+  <div class="sing-in__background"></div>
+  <div class="sing-in__box" *ngIf="!showLoading">
+    <mat-card>
+      <h1 class="sing-in__box-header">ورود</h1>
+      <form [formGroup]="loginForm" (submit)="login()">
+        <mat-form-field>
+          <mat-label>نام‌کاربری</mat-label>
+          <input matInput formControlName="userName" required />
+          <mat-error *ngIf="userName.invalid"
+            >ورود نام‌کاربری الزامی است!</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>رمزعبور</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            required
+          />
+          <span
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+          >
+            <i
+              class="fal"
+              [ngClass]="{
+                'fa-eye': hidePassword,
+                'fa-eye-slash': !hidePassword
+              }"
+            ></i>
+          </span>
+          <mat-error *ngIf="password.invalid"
+            >ورود رمزعبور الزامی است!</mat-error
+          >
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" type="submit">ورود</button>
+      </form>
+    </mat-card>
+  </div>
+  <app-loading *ngIf="showLoading"></app-loading>
+</div>

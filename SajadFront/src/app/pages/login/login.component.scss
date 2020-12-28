@@ -1,0 +1,59 @@
+
+.sing-in {
+
+  position: relative;
+  a{
+    text-decoration: none;
+  }
+
+  display: flex;
+  justify-content: center;
+
+  height: 100%;
+
+  &__background {
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+
+    height: 50%;
+    width: 100%;
+    position: absolute;
+  }
+
+
+  &__box {
+
+
+    transition: margin-top 1s;
+
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+
+    form {
+      margin-top: auto !important;
+      margin-bottom: auto !important;
+    }
+
+    &-header{
+      text-align: center;
+    }
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  app-loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+
+    &:empty{
+      display: none;
+    }
+  }
+}

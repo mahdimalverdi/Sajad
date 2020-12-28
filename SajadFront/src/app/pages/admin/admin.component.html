@@ -21,7 +21,11 @@
       <h2>بارگیری نتایج</h2>
     </mat-card-header>
     <mat-card-content>
-      <a mat-raised-button href="/api/Contents/DownloadFile" color="accent">
+      <a
+        mat-raised-button
+        [href]="'/api/Contents/DownloadFile?authToken=' + token"
+        color="accent"
+      >
         <i class="fas fa-download"></i>
         بارگیری نتایج
       </a>
