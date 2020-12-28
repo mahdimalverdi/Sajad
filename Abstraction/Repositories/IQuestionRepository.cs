@@ -7,5 +7,6 @@ namespace Abstraction.Repositories
     public interface IQuestionRepository
     {
         Task AddAsync(string paraphId, IEnumerable<QuestionStruct> questions);
+        Task<int> GetCountAsync();
     }
 }

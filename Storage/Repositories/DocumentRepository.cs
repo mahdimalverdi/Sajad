@@ -1,38 +1,47 @@
 ﻿using Abstraction.Models;
 using Abstraction.Repositories;
-using Nest;
+using Microsoft.EntityFrameworkCore;
 using Storage.Caching;
-using Storage.Repositories.DocumentCommands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Storage.Repositories
 {
     public class DocumentRepository : IDocumentRepository
     {
-        private readonly ElasticClient client;
+        private readonly SajadDbContext dbContext;
 
-        public DocumentRepository(ElasticClient client)
+        public DocumentRepository(SajadDbContext dbContext)
         {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task AddRangeAsync(IEnumerable<Document> documents)
         {
-            var command = new AddRangeCommand(client, documents);
-            await command.ExecuteAsync().ConfigureAwait(false);
+            await dbContext.Documents.AddRangeAsync(documents).ConfigureAwait(false);
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             ParagraphsCache.Instance.Ids.Clear();
         }
 
         public async Task<IEnumerable<Document>> GetAllAsync()
         {
-            var command = new GetAllCommands(client);
+            var result = await this.dbContext.Documents
+                .Include(d => d.Paragraphs)
+                .ThenInclude(p => p.Questions)
+                .ThenInclude(q => q.Answers)
+                .ToListAsync()
+                .ConfigureAwait(false);
 
-            return await command.ExecuteAsync().ConfigureAwait(false);
+            return result;
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            var result = await dbContext.Documents.CountAsync().ConfigureAwait(false);
+
+            return result;
         }
     }
 }

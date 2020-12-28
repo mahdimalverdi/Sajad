@@ -29,6 +29,11 @@ namespace Storage
             modelBuilder.Entity<QuestionStruct>().HasKey(d => d.Id);
             modelBuilder.Entity<Answer>().HasKey(d => d.Id);
 
+            modelBuilder.Entity<Document>().HasIndex(d => d.Id);
+            modelBuilder.Entity<Paragraph>().HasIndex(d => d.Id);
+            modelBuilder.Entity<QuestionStruct>().HasIndex(d => d.Id);
+            modelBuilder.Entity<Answer>().HasIndex(d => d.Id);
+
             modelBuilder.Entity<Document>().HasMany(d => d.Paragraphs).WithOne().HasForeignKey(p => p.DocumentId);
             modelBuilder.Entity<Paragraph>().HasMany(d => d.Questions).WithOne().HasForeignKey(q => q.ParagraphId);
             modelBuilder.Entity<QuestionStruct>().HasMany(d => d.Answers).WithOne().HasForeignKey(a => a.QuestionStructId);

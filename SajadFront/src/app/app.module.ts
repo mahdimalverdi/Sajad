@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdminComponent } from './pages/admin/admin.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { CounterComponent } from './components/counter/counter.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     HomeComponent,
     AddQuestionComponent,
     AdminComponent,
-    LoadingComponent
+    LoadingComponent,
+    CounterComponent
   ],
   imports: [
     BrowserModule,

@@ -4,15 +4,16 @@
       <h2>بارگذاری داده‌ها</h2>
     </mat-card-header>
     <mat-card-content>
-        <button
-        (click)="uploadFile.click()"
-          mat-raised-button
-          color="accent"
-        >
-          <i class="fas fa-upload"></i>
-          انتخاب فایل
-        </button>
-        <input #uploadFile id="upload-file" type="file" (change)="handleFileInput($event)"/>
+      <button (click)="uploadFile.click()" mat-raised-button color="accent">
+        <i class="fas fa-upload"></i>
+        انتخاب فایل
+      </button>
+      <input
+        #uploadFile
+        id="upload-file"
+        type="file"
+        (change)="handleFileInput($event)"
+      />
     </mat-card-content>
   </mat-card>
   <mat-card class="admin__card">
@@ -20,14 +21,15 @@
       <h2>بارگیری نتایج</h2>
     </mat-card-header>
     <mat-card-content>
-      <a
-        mat-raised-button
-        href="/api/Contents/DownloadFile"
-        color="accent"
-      >
+      <a mat-raised-button href="/api/Contents/DownloadFile" color="accent">
         <i class="fas fa-download"></i>
         بارگیری نتایج
       </a>
     </mat-card-content>
   </mat-card>
+  <div class="admin__counters">
+    <app-counter [count]="documentCount" title="تعداد اسناد"></app-counter>
+    <app-counter [count]="paraghraphCount" title="تعداد بندها"></app-counter>
+    <app-counter [count]="questionCount" title="تعداد سوالات"></app-counter>
+  </div>
 </div>

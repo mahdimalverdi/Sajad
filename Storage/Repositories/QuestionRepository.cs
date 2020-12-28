@@ -1,7 +1,6 @@
 ﻿using Abstraction.Models;
 using Abstraction.Repositories;
-using Nest;
-using Storage.Repositories.QuestionCommands;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,17 +9,28 @@ namespace Storage.Repositories
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly ElasticClient client;
+        private readonly SajadDbContext dbContext;
 
-        public QuestionRepository(ElasticClient client)
+        public QuestionRepository(SajadDbContext dbContext)
         {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task AddAsync(string paraphId, IEnumerable<QuestionStruct> questions)
         {
-            var command = new AddCommand(paraphId, client, questions);
-            await command.ExecuteAsync().ConfigureAwait(false);
+            foreach(var question in questions)
+            {
+                question.ParagraphId = paraphId;
+            }
+            await dbContext.QuestionStructs.AddRangeAsync(questions).ConfigureAwait(false);
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            var result = await dbContext.QuestionStructs.CountAsync().ConfigureAwait(false);
+
+            return result;
         }
     }
 }

@@ -1,23 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Abstraction.Managers;
 using Abstraction.Repositories;
 using Business.Managers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Nest;
 using Storage;
 using Storage.Repositories;
 
@@ -42,26 +34,30 @@ namespace Sajad
                 x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
             });
 
-            var connectionString = new SqliteConnectionStringBuilder()
-            {
-                DataSource = "sajad.sqlite"
-            }.ConnectionString;
-            services.AddDbContext<SajadDbContext>(o => o.UseSqlite(connectionString));
-
-            services.AddScoped((provider) =>
-            {
-                Uri uri = new Uri("http://localhost:9200");
-                var connectionSettings = new ConnectionSettings(uri);
-                connectionSettings.DefaultIndex("document");
-                return new ElasticClient(connectionSettings);
-            });
+            services.AddDbContext<SajadDbContext>(o => o.UseSqlite(Configuration["ConnectionString"]));
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<IContentManager, ContentManager>();
             services.AddScoped<IParaghraphRepository, ParaghraphRepository>();
+
+            services.AddScoped<IContentManager, ContentManager>();
             services.AddScoped<IParaghraphManager, ParaghraphManager>();
             services.AddScoped<IQuestionManager, QuestionManager>();
+            services.AddScoped<IDocumentManager, DocumentManager>();
+
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = int.MaxValue;
+            });
+
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = int.MaxValue; 
+            });
+
+            var provider = services.BuildServiceProvider();
+            using var dbContext = provider.GetService<SajadDbContext>();
+            dbContext.Database.Migrate();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

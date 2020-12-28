@@ -23,5 +23,10 @@ namespace Business.Managers
                 .AddAsync(paragraphId, questions)
                 .ConfigureAwait(false);
         }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await questionRepository.GetCountAsync().ConfigureAwait(false);
+        }
     }
 }

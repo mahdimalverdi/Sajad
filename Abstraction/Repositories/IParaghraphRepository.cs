@@ -7,6 +7,7 @@ namespace Abstraction.Repositories
     public interface IParaghraphRepository
     {
         Task<IEnumerable<string>> GetAllIdsAsync();
+        Task<int> GetCountAsync();
         Task<Document> GetParaghtaphAsync(string id);
     }
 }

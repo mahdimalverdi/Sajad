@@ -1,34 +1,36 @@
 ﻿using Abstraction.Models;
 using Abstraction.Repositories;
-using Nest;
 using Storage.Caching;
-using Storage.Repositories.ParaghraphCommands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Storage.Repositories
 {
     public class ParaghraphRepository : IParaghraphRepository
     {
-        private readonly ElasticClient client;
+        private readonly SajadDbContext dbContext;
         private static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
 
-        public ParaghraphRepository(ElasticClient client)
+        public ParaghraphRepository(SajadDbContext dbContext)
         {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<Document> GetParaghtaphAsync(string id)
         {
-            var command = new GetCommand(client, id);
+            var document = await dbContext.Documents
+                .Include(d => d.Paragraphs)
+                .SingleAsync(d => d.Paragraphs.Any(p => p.Id.Equals(id)))
+                .ConfigureAwait(false);
 
-            return await command.ExecuteAsync().ConfigureAwait(false);
+            document.Paragraphs = document.Paragraphs.Where(p => p.Id.Equals(id)).ToList();
+
+            return document;
         }
-
 
         public async Task<IEnumerable<string>> GetAllIdsAsync()
         {
@@ -37,7 +39,7 @@ namespace Storage.Repositories
                 await semaphoreSlim.WaitAsync().ConfigureAwait(false);
                 try
                 {
-                    await StoreIds().ConfigureAwait(false);
+                    await StoreIdsAsync().ConfigureAwait(false);
                 }
                 finally
                 {
@@ -48,12 +50,18 @@ namespace Storage.Repositories
             return ParagraphsCache.Instance.Ids;
         }
 
-        private async Task StoreIds()
+        public async Task<int> GetCountAsync()
+        {
+            var result = await dbContext.Paragraphs.CountAsync().ConfigureAwait(false);
+
+            return result;
+        }
+
+        private async Task StoreIdsAsync()
         {
             if (!ParagraphsCache.Instance.Ids.Any())
             {
-                var command = new GetAllIdsCommand(client);
-                var ids = await command.ExecuteAsync().ConfigureAwait(false);
+                var ids = await dbContext.Paragraphs.Select(p => p.Id).ToListAsync().ConfigureAwait(false);
                 ParagraphsCache.Instance.Ids.AddRange(ids);
             }
         }

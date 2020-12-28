@@ -8,5 +8,6 @@ namespace Abstraction.Repositories
     {
         Task AddRangeAsync(IEnumerable<Document> documents);
         Task<IEnumerable<Document>> GetAllAsync();
+        Task<int> GetCountAsync();
     }
 }

@@ -3,6 +3,7 @@ using Abstraction.Models;
 using Abstraction.Models.Output;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Adapters
@@ -21,8 +22,15 @@ namespace Business.Adapters
             return new Paragraph()
             {
                 Id = Guid.NewGuid().ToString(),
-                Context = paragraph.Context.Trim()
+                Context = paragraph.Context.Trim(),
+                Questions = paragraph.Qas.Select(Get).ToList()
             };
+        }
+
+        private QuestionStruct Get(OutputQuestionStruct questionStruct)
+        {
+            var adapter = new QuestionStructAdapter(questionStruct);
+            return adapter.Get();
         }
     }
 }

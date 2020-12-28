@@ -27,5 +27,10 @@ namespace Business.Managers
             var paragraph = await repository.GetParaghtaphAsync(paragraphId).ConfigureAwait(false);
             return paragraph;
         }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await repository.GetCountAsync().ConfigureAwait(false);
+        }
     }
 }

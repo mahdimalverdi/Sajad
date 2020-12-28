@@ -27,5 +27,13 @@ namespace Sajad.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCountAsync()
+        {
+            var count = await paraghraphManager.GetCountAsync().ConfigureAwait(false);
+
+            return Ok(count);
+        }
     }
 }

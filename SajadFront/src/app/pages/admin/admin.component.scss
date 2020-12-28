@@ -17,6 +17,15 @@
     }
   }
 
+  &__counters{
+    display: flex;
+    justify-content: center;
+
+    *:not(:last-child){
+      margin-inline-end: 20px;
+    }
+  }
+
 }
 
 #upload-file{

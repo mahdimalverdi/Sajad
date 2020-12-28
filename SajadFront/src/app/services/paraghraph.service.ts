@@ -13,4 +13,8 @@ export class ParaghraphService {
   public async getNextParagraph(): Promise<QuestionContent> {
     return await this.client.post<QuestionContent>(environment.baseUrl +'/api/Paraghraph/GetNextParaghraph', null).toPromise();
   }
+
+  public async getCount(): Promise<any> {
+    return await this.client.post(environment.baseUrl + '/api/Paraghraph/GetCount', null).toPromise();
+  }
 }

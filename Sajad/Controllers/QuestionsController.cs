@@ -33,5 +33,13 @@ namespace Sajad.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCountAsync()
+        {
+            var count = await questionManager.GetCountAsync().ConfigureAwait(false);
+
+            return Ok(count);
+        }
     }
 }

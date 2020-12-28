@@ -13,4 +13,8 @@ export class QuestionService {
   public async Add(question: AddQuestion): Promise<any> {
     return await this.client.post(environment.baseUrl + '/api/Questions/Add', question).toPromise();
   }
+
+  public async getCount(): Promise<any> {
+    return await this.client.post(environment.baseUrl + '/api/Questions/GetCount', null).toPromise();
+  }
 }
