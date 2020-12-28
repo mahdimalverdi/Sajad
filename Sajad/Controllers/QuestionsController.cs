@@ -1,6 +1,7 @@
 ﻿using Abstraction.Managers;
 using Abstraction.Models;
 using Abstraction.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sajad.Models;
 using System;
@@ -35,6 +36,7 @@ namespace Sajad.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCountAsync()
         {
             var count = await questionManager.GetCountAsync().ConfigureAwait(false);

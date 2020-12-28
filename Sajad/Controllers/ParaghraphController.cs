@@ -1,4 +1,5 @@
 ﻿using Abstraction.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sajad.Adapters;
 using System;
@@ -29,6 +30,7 @@ namespace Sajad.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCountAsync()
         {
             var count = await paraghraphManager.GetCountAsync().ConfigureAwait(false);

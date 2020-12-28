@@ -1,13 +1,11 @@
 ﻿using Abstraction.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Storage
 {
-    public class SajadDbContext : DbContext
+    public class SajadDbContext : IdentityDbContext
     {
         public SajadDbContext([NotNull] DbContextOptions options) : base(options)
         {

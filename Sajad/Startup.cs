@@ -1,15 +1,21 @@
+using System;
 using System.IO;
+using System.Text;
 using Abstraction.Managers;
 using Abstraction.Repositories;
 using Business.Managers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Sajad.Middlewares;
 using Storage;
 using Storage.Repositories;
 
@@ -34,6 +40,9 @@ namespace Sajad
                 x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
             });
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<SajadDbContext>();
+
             services.AddDbContext<SajadDbContext>(o => o.UseSqlite(Configuration["ConnectionString"]));
 
             services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -44,6 +53,46 @@ namespace Sajad
             services.AddScoped<IParaghraphManager, ParaghraphManager>();
             services.AddScoped<IQuestionManager, QuestionManager>();
             services.AddScoped<IDocumentManager, DocumentManager>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
+            services.AddAuthentication(cfg =>
+            {
+                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.Configuration["Token:Key"]))
+                };
+            });
 
             services.Configure<IISServerOptions>(options =>
             {
@@ -55,9 +104,12 @@ namespace Sajad
                 options.Limits.MaxRequestBodySize = int.MaxValue; 
             });
 
+            services.AddTransient<DbContextSeeder>();
+
             var provider = services.BuildServiceProvider();
-            using var dbContext = provider.GetService<SajadDbContext>();
-            dbContext.Database.Migrate();
+            var dbContext = provider.GetService<DbContextSeeder>();
+
+            dbContext.Seed();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +119,8 @@ namespace Sajad
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<AuthenticationMiddleware>();
 
             app.UseAuthentication();
 

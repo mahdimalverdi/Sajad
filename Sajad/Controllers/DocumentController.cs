@@ -1,4 +1,5 @@
 ﻿using Abstraction.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace Sajad.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentManager documentManager;

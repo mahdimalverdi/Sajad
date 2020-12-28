@@ -4,6 +4,7 @@ using Abstraction.Models.Output;
 using Abstraction.Repositories;
 using Business.Adapters;
 using Business.Serializer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Storage.Repositories;
@@ -17,6 +18,7 @@ namespace Sajad.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ContentsController : ControllerBase
     {
         private const string ContentType = "application/json";
