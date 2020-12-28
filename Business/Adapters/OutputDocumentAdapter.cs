@@ -21,7 +21,7 @@ namespace Business.Adapters
             return new OutputDocument()
             {
                 Title = document.Title,
-                Paragraphs = document.Paragraphs.Select(Get).Where(p => p.Qas.Any()).ToList()
+                Paragraphs = document.Paragraphs.Select(Get).ToList()
             };
         }
 
