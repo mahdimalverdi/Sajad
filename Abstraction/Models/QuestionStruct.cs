@@ -6,6 +6,11 @@ namespace Abstraction.Models
 {
     public class QuestionStruct
     {
+        public QuestionStruct()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public string Id { get; set; }
 
         public string Question { get; set; }
