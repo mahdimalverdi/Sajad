@@ -33,7 +33,7 @@ export class JWTTokenService {
   }
 
   public decodeToken() {
-    if (this.jwtToken) {
+    if (this.jwtToken && this.jwtToken !== 'undefined') {
       this.decodedToken = jwt_decode.default(this.jwtToken);
     }
   }

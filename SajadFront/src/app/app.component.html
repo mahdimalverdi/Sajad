@@ -10,6 +10,7 @@
     <span>سجاد</span>
   </a>
   <span class="spacer"></span>
+  <button mat-button *ngIf="token !== 'undefined'" (click)="logout()">خروج</button>
   <img class="logo" src="../assets/bigdata.png" />
   <img class="logo" src="../assets/UILogo.png" />
 </mat-toolbar>
