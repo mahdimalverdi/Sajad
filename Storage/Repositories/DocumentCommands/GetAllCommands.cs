@@ -25,9 +25,12 @@ namespace Storage.Repositories.DocumentCommands
         {
             await SetSearchResponse().ConfigureAwait(false);
 
-            var result = await GetDocumentsAsync().ToListAsync().ConfigureAwait(false);
-
-            return result.SelectMany(e => e);
+            var result = new List<Document>();
+            await foreach(var item in GetDocumentsAsync().ConfigureAwait(false))
+            {
+                result.AddRange(item);
+            }
+            return result;
         }
 
         private async Task SetSearchResponse()
@@ -41,11 +44,11 @@ namespace Storage.Repositories.DocumentCommands
 
         public async IAsyncEnumerable<IEnumerable<Document>> GetDocumentsAsync()
         {
-            while(searchResponse.Documents.Any())
+            while (searchResponse.Documents.Any())
             {
                 yield return searchResponse.Documents;
                 searchResponse = await client.ScrollAsync<Document>(Scroll, searchResponse.ScrollId).ConfigureAwait(false);
-            } 
+            }
         }
 
     }

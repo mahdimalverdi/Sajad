@@ -25,9 +25,12 @@ namespace Storage.Repositories.ParaghraphCommands
         {
             await SetSearchResponse().ConfigureAwait(false);
 
-            var result = await GetDocumentsAsync().ToListAsync().ConfigureAwait(false);
-
-            return result.SelectMany(e => e).SelectMany(d => d.Paragraphs).Select(p => p.Id);
+            var result = new List<Document>();
+            await foreach (var item in GetDocumentsAsync().ConfigureAwait(false))
+            {
+                result.AddRange(item);
+            }
+            return result.SelectMany(d => d.Paragraphs).Select(p => p.Id);
         }
 
         private async Task SetSearchResponse()
