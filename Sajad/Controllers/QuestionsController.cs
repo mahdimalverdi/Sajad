@@ -31,6 +31,18 @@ namespace Sajad.Controllers
                 return BadRequest(ModelState);
             }
 
+            string userId = GetUserId();
+
+            foreach (var question in viewModel.Questions)
+            {
+                question.UserId = userId;
+            }
+
+            foreach (var answer in viewModel.Questions.SelectMany(q => q.Answers))
+            {
+                answer.UserId = userId;
+            }
+
             await questionManager.AddRangeAsync(viewModel.ParagraphId, viewModel.Questions).ConfigureAwait(false);
 
             return Ok();
@@ -43,6 +55,10 @@ namespace Sajad.Controllers
             var count = await questionManager.GetCountAsync().ConfigureAwait(false);
 
             return Ok(count);
+        }
+        private string GetUserId()
+        {
+            return HttpContext.User.Claims.Single(c => c.Type.Equals("Id")).Value;
         }
     }
 }

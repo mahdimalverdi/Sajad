@@ -18,5 +18,7 @@ namespace Abstraction.Models
         public List<Answer> Answers { get; set; }
 
         public string ParagraphId { get; set; }
+
+        public string UserId { get; set; }
     }
 }

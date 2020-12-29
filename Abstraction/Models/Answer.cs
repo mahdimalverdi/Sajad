@@ -15,5 +15,6 @@ namespace Abstraction.Models
         public string Text { get; set; }
         public int AnswerStart { get; set; }
         public string QuestionStructId { get; set; }
+        public string UserId { get; set; }
     }
 }
