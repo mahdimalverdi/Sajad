@@ -27,6 +27,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { RegisterComponent } from './pages/register/register.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { RegisterComponent } from './pages/register/register.component';
     LoadingComponent,
     CounterComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

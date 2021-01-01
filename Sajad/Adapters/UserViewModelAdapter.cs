@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Abstraction.Models;
+using Microsoft.AspNetCore.Identity;
 using Sajad.Models;
 using System;
 using System.Collections;
@@ -11,10 +12,12 @@ namespace Sajad.Adapters
     public class UserViewModelAdapter
     {
         private readonly IEnumerable<IdentityUser> identityUsers;
+        private readonly Dictionary<string, int> questionsCountPerUsers;
 
-        public UserViewModelAdapter(IEnumerable<IdentityUser> identityUsers)
+        public UserViewModelAdapter(IEnumerable<IdentityUser> identityUsers, IEnumerable<QuestionsCountPerUser> questionsCountPerUsers)
         {
             this.identityUsers = identityUsers ?? throw new ArgumentNullException(nameof(identityUsers));
+            this.questionsCountPerUsers = questionsCountPerUsers?.ToDictionary(q => q.UserId, q => q.Count) ?? throw new ArgumentNullException(nameof(questionsCountPerUsers));
         }
 
         public IEnumerable<UserViewModel> GetUsers()
@@ -24,11 +27,11 @@ namespace Sajad.Adapters
 
         private UserViewModel GetUser(IdentityUser user)
         {
-            return new UserViewModel()
+            if(!questionsCountPerUsers.TryGetValue(user.Id, out var questionCount))
             {
-                Id = user.Id,
-                UserName = user.UserName
-            };
+                questionCount = 0;
+            }
+            return new UserViewModel(user.UserName, user.Id, questionCount);
         }
     }
 }

@@ -17,10 +17,12 @@ namespace Sajad.Controllers
     public class AuthenticationController : ControllerBase
     {
         protected readonly IAuthenticationManager manager;
+        private readonly IQuestionManager questionManager;
 
-        public AuthenticationController(IAuthenticationManager manager)
+        public AuthenticationController(IAuthenticationManager manager, IQuestionManager questionManager)
         {
             this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            this.questionManager = questionManager ?? throw new ArgumentNullException(nameof(questionManager));
         }
 
         [AllowAnonymous]
@@ -54,7 +56,8 @@ namespace Sajad.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await manager.GetUsersAsync().ConfigureAwait(false);
-            var adapter = new UserViewModelAdapter(users);
+            var counts = await questionManager.GetQuestionsCountPerUsersAsync().ConfigureAwait(false);
+            var adapter = new UserViewModelAdapter(users, counts);
             return Ok(adapter.GetUsers());
         }
 
@@ -68,6 +71,20 @@ namespace Sajad.Controllers
             }
 
             await manager.RegisterAsync(model.UserName, model.Password).ConfigureAwait(false);
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> ChangePaswordAsync(ChangePaswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await manager.ChangePasswordAsync(model.UserId, model.NewPassword).ConfigureAwait(false);
+
             return Ok();
         }
     }

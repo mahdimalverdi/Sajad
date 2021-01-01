@@ -3,6 +3,7 @@ using Abstraction.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Storage.Repositories
@@ -31,6 +32,17 @@ namespace Storage.Repositories
             var result = await dbContext.QuestionStructs.CountAsync().ConfigureAwait(false);
 
             return result;
+        }
+
+        public async Task<IReadOnlyList<QuestionsCountPerUser>> GetQuestionsCountPerUsersAsync()
+        {
+            return await dbContext
+                .QuestionStructs
+                .GroupBy(q => q.UserId)
+                .Where(q => q.Key != null)
+                .Select(g => new QuestionsCountPerUser(g.Key, g.Count()))
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

@@ -36,10 +36,20 @@
       <h2>کاربران</h2>
     </mat-card-header>
     <mat-card-content>
-      <a mat-raised-button color="primary" routerLink="/Register">افزودن کاربر</a>
+      <a mat-raised-button color="primary" routerLink="/Register"
+        >افزودن کاربر</a
+      >
       <mat-list>
         <mat-list-item *ngFor="let user of users">
-          {{ user.userName }}
+          <span class="admin__username"> {{ user.userName }}</span>
+          <span class="admin__username"> تعداد سوالات: {{ user.questionCount }}</span>
+          <a
+            mat-raised-button
+            color="accent"
+            [routerLink]="['/ChangePassword', user.id]"
+          >
+            تغییر رمز عبور
+          </a>
         </mat-list-item>
       </mat-list>
     </mat-card-content>

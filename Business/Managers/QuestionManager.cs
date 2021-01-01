@@ -28,5 +28,10 @@ namespace Business.Managers
         {
             return await questionRepository.GetCountAsync().ConfigureAwait(false);
         }
+
+        public async Task<IReadOnlyList<QuestionsCountPerUser>> GetQuestionsCountPerUsersAsync()
+        {
+            return await questionRepository.GetQuestionsCountPerUsersAsync().ConfigureAwait(false);
+        }
     }
 }

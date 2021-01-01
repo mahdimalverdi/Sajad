@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { ChangePassword } from '../models/change-password';
 import { Login } from '../models/login';
 import { User } from '../models/user';
 import { JWTTokenService } from './jwttoken.service';
@@ -23,5 +24,9 @@ export class AuthenticationService {
 
   public async getUsers() {
     return await this.client.post<User[]>('/api/Authentication/GetUsers', null).toPromise();
+  }
+
+  public async changePassword(model: ChangePassword): Promise<any> {
+    await this.client.post<any>('/api/Authentication/ChangePasword', model).toPromise();
   }
 }

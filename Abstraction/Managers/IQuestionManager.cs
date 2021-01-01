@@ -8,5 +8,6 @@ namespace Abstraction.Managers
     {
         Task AddRangeAsync(string paragraphId, IEnumerable<QuestionStruct> questions);
         Task<int> GetCountAsync();
+        Task<IReadOnlyList<QuestionsCountPerUser>> GetQuestionsCountPerUsersAsync();
     }
 }

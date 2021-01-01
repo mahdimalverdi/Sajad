@@ -30,11 +30,6 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams.returnUrl === '/Panel/Customer/Add-Prescription') {
-      this.snackBar.open('مشتری گرامی برای ارسال نسخه لطفا ابتدا در سایت عضو شوید و یا اگر عضو هستید وارد حساب کاربریتان شوید', 'بستن', {
-        duration: 5000,
-      });
-    }
   }
 
   public async login() {

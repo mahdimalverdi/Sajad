@@ -8,5 +8,6 @@ namespace Abstraction.Repositories
     {
         Task AddAsync(string paraphId, IEnumerable<QuestionStruct> questions);
         Task<int> GetCountAsync();
+        Task<IReadOnlyList<QuestionsCountPerUser>> GetQuestionsCountPerUsersAsync();
     }
 }
