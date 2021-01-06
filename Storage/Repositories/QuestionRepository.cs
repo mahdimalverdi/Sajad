@@ -19,7 +19,7 @@ namespace Storage.Repositories
 
         public async Task AddAsync(string paraphId, IEnumerable<QuestionStruct> questions)
         {
-            foreach(var question in questions)
+            foreach (var question in questions)
             {
                 question.ParagraphId = paraphId;
             }

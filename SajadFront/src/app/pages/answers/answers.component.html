@@ -1,0 +1,32 @@
+<ng-container [ngSwitch]="state">
+  <div class="add-question">
+    <ng-container *ngSwitchCase="'ready'">
+      <mat-card class="add-question__card">
+        <h1>سوالات</h1>
+        <ng-container>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let answer of answers; let i = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ answer.question }}
+                </mat-panel-title>
+                <mat-panel-description class="add-question__description">
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <strong>{{ answer.title }}</strong>
+              <p>{{ answer.paragraph }}</p>
+              <br />
+              <strong>{{ answer.question }}</strong>
+              <p>
+                {{ answer.answer }}
+              </p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="'loading'">
+      <app-loading></app-loading>
+    </ng-container>
+  </div>
+</ng-container>

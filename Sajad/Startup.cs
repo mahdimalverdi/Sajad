@@ -48,12 +48,14 @@ namespace Sajad
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IParaghraphRepository, ParaghraphRepository>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
 
             services.AddScoped<IContentManager, ContentManager>();
             services.AddScoped<IParaghraphManager, ParaghraphManager>();
             services.AddScoped<IQuestionManager, QuestionManager>();
             services.AddScoped<IDocumentManager, DocumentManager>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+            services.AddScoped<IAnswerManager, AnswerManager>();
 
             services.Configure<IdentityOptions>(options =>
             {

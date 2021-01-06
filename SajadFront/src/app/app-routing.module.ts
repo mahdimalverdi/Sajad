@@ -4,6 +4,7 @@ import { AuthorizeGuard } from './guards/authorize.guard';
 import { ChangePassword } from './models/change-password';
 import { AddQuestionComponent } from './pages/add-question/add-question.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { AnswersComponent } from './pages/answers/answers.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -34,6 +35,10 @@ const routes: Routes = [{
 {
   path: 'ChangePassword/:userId',
   component: ChangePasswordComponent
+},
+{
+  path: 'Answers/:userId',
+  component: AnswersComponent
 }];
 
 @NgModule({
