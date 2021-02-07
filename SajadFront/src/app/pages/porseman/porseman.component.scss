@@ -1,0 +1,28 @@
+.add-question{
+  padding-bottom: 50px;
+  margin: auto auto;
+  width: 900px;
+  max-width: 100%;
+
+  &__content{
+    text-align: justify;
+    text-align-last: right;
+  }
+
+  &__card{
+    margin-bottom: 20px;
+
+    &-table{
+      width: 100%;
+    }
+  }
+
+  &__textarea{
+    min-height: 4em;
+  }
+
+  &__description{
+    justify-content: flex-end;
+  }
+
+}
