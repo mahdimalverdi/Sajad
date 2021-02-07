@@ -8,9 +8,12 @@ import { JWTTokenService } from '../services/jwttoken.service';
 export class UrlInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    request = request.clone({
-      url: environment.baseUrl + request.url
-    });
+    if (!request.url.toLowerCase().startsWith('http')) {
+      request = request.clone({
+        url: environment.baseUrl + request.url
+      });
+    }
+
     return next.handle(request);
   }
 }

@@ -19,6 +19,7 @@ namespace Sajad.Controllers
             this.paraghraphManager = paraghraphManager ?? throw new ArgumentNullException(nameof(paraghraphManager));
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> GetNextParaghraphAsync()
         {

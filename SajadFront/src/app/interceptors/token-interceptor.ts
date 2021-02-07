@@ -5,14 +5,16 @@ import { JWTTokenService } from '../services/jwttoken.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(public auth: JWTTokenService) {}
+  constructor(public auth: JWTTokenService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.auth.getToken()}`
-      }
-    });
+    if (!request.url.toLowerCase().startsWith('http')) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.auth.getToken()}`
+        }
+      });
+    }
     return next.handle(request);
   }
 }

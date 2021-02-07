@@ -29,6 +29,7 @@ import { MatListModule } from '@angular/material/list';
 import { RegisterComponent } from './pages/register/register.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { AnswersComponent } from './pages/answers/answers.component';
+import { PorsemanComponent } from './pages/porseman/porseman.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,8 @@ import { AnswersComponent } from './pages/answers/answers.component';
     LoginComponent,
     RegisterComponent,
     ChangePasswordComponent,
-    AnswersComponent
+    AnswersComponent,
+    PorsemanComponent
   ],
   imports: [
     BrowserModule,

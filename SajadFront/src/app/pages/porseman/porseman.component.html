@@ -1,0 +1,51 @@
+<ng-container [ngSwitch]="state">
+  <div class="add-question">
+    <ng-container *ngSwitchCase="'ready'">
+      <mat-card class="add-question__card">
+        <h1>{{ paragraph.title }}</h1>
+        <p id="context" class="add-question__content">
+          {{ paragraph.context }}
+        </p>
+      </mat-card>
+      <mat-card class="add-question__card">
+        <form id="add-question" (submit)="ask()" [formGroup]="form">
+          <mat-form-field appearance="legacy">
+            <input formControlName="question" matInput placeholder="سوال" />
+            <mat-error *ngIf="form?.controls?.question?.errors?.required"
+              >سوال نمی‌تواند خالی باشد</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="legacy">
+            <textarea
+              class="add-question__textarea"
+              formControlName="answer"
+              matInput
+              placeholder="پاسخ"
+              readonly
+            ></textarea>
+          </mat-form-field>
+        </form>
+        <mat-card-actions>
+          <button
+            type="submit"
+            mat-raised-button
+            color="accent"
+            form="add-question"
+          >
+            بپرس
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card class="add-question__card">
+        <mat-card-actions>
+          <button mat-stroked-button color="warn" (click)="nextParagraph()">
+            رد کردن
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="'loading'">
+      <app-loading></app-loading>
+    </ng-container>
+  </div>
+</ng-container>

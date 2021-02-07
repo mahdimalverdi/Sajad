@@ -8,6 +8,7 @@ import { AnswersComponent } from './pages/answers/answers.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
+import { PorsemanComponent } from './pages/porseman/porseman.component';
 import { RegisterComponent } from './pages/register/register.component';
 const routes: Routes = [{
   path: '',
@@ -39,6 +40,10 @@ const routes: Routes = [{
 {
   path: 'Answers/:userId',
   component: AnswersComponent
+},
+{
+  path: 'Porseman',
+  component: PorsemanComponent
 }];
 
 @NgModule({
