@@ -50,7 +50,8 @@ namespace Storage.Repositories
                 document.Title,
                 paragraph.Context,
                 question.Question,
-                answer.Text);
+                answer.Text,
+                answer.IsImpossible);
             return answerStruct;
         }
 

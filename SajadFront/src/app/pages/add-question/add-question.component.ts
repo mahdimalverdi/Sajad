@@ -31,7 +31,8 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
   public readonly answerSubject: Subject<any>;
   public form: FormGroup = new FormGroup({
     question: new FormControl(null, [Validators.required]),
-    answer: new FormControl(null, [Validators.required])
+    answer: new FormControl(null, [Validators.required]),
+    isImpossible: new FormControl(null, [Validators.required])
   });
 
   constructor(
@@ -81,10 +82,12 @@ export class AddQuestionComponent implements OnInit, AfterViewInit {
   }
 
   public addNewQuestion() {
-    if (this.form.valid) {
+    const isImpossible = this.form.get('isImpossible')?.value;
+    if ((isImpossible && this.form.get('question')?.valid) ||  this.form.valid) {
+      const text = isImpossible ? '' : this.form.get('answer')?.value;
       this.addQuestion.questions.push({
         question: this.form.get('question')?.value,
-        answers: [{ answerStart: this.offset, text: this.form.get('answer')?.value }]
+        answers: [{ answerStart: isImpossible ? -1 : this.offset, text: text, isImpossible: isImpossible }]
       });
 
       this.resetVariables();

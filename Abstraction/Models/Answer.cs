@@ -16,5 +16,6 @@ namespace Abstraction.Models
         public int AnswerStart { get; set; }
         public string QuestionStructId { get; set; }
         public string UserId { get; set; }
+        public bool IsImpossible { get; set; }
     }
 }

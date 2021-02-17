@@ -5,4 +5,5 @@ export class AnswerStruct {
   public paragraph: string = '';
   public question: string = '';
   public answer: string = '';
+  public isImpossible: boolean = false;
 }

@@ -6,7 +6,7 @@ namespace Abstraction.Models
 {
     public class AnswerStruct
     {
-        public AnswerStruct(string answerId, string questionId, string title, string paragraph, string question, string answer)
+        public AnswerStruct(string answerId, string questionId, string title, string paragraph, string question, string answer, bool isImpossible)
         {
             AnswerId = answerId ?? throw new ArgumentNullException(nameof(answerId));
             QuestionId = questionId ?? throw new ArgumentNullException(nameof(questionId));
@@ -14,6 +14,7 @@ namespace Abstraction.Models
             Paragraph = paragraph ?? throw new ArgumentNullException(nameof(paragraph));
             Question = question ?? throw new ArgumentNullException(nameof(question));
             Answer = answer ?? throw new ArgumentNullException(nameof(answer));
+            IsImpossible = isImpossible;
         }
 
         public string AnswerId { get; }
@@ -22,5 +23,6 @@ namespace Abstraction.Models
         public string Paragraph { get; }
         public string Question { get; }
         public string Answer { get; }
+        public bool IsImpossible { get; }
     }
 }

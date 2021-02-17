@@ -8,5 +8,6 @@ namespace Abstraction.Models.Output
     {
         public string Text { get; set; }
         public int AnswerStart { get; set; }
+        public bool IsImpossible { get; set; }
     }
 }

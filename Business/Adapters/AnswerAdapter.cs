@@ -19,7 +19,8 @@ namespace Business.Adapters
             {
                 AnswerStart = answer.AnswerStart,
                 Text = answer.Text,
-                Id = Guid.NewGuid().ToString()
+                Id = Guid.NewGuid().ToString(),
+                IsImpossible = answer.IsImpossible
             };
         }
     }

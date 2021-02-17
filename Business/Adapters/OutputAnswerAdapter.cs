@@ -20,7 +20,8 @@ namespace Business.Adapters
             return new OutputAnswer()
             {
                 AnswerStart = answer.AnswerStart,
-                Text = answer.Text
+                Text = answer.Text,
+                IsImpossible = answer.IsImpossible
             };
         }
     }

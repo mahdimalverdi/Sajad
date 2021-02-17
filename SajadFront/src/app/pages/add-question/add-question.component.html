@@ -23,11 +23,13 @@
               placeholder="پاسخ"
               readonly
             ></textarea>
-            <mat-error *ngIf="form?.controls?.answer?.errors?.required"
+            <mat-error *ngIf="!form?.controls?.isImpossible?.value && form?.controls?.answer?.errors?.required"
               >پاسخ نمی‌تواند خالی باشد</mat-error
             >
           </mat-form-field>
-          <!-- <mat-checkbox>این سوال، یک سوال بی پاسخ است</mat-checkbox> -->
+          <mat-checkbox formControlName="isImpossible"
+            >این سوال، یک سوال بی پاسخ است</mat-checkbox
+          >
         </form>
         <mat-card-actions>
           <button
@@ -56,7 +58,12 @@
               </mat-expansion-panel-header>
               <strong>پاسخ‌ها:</strong>
               <p *ngFor="let answer of question.answers">
-                {{ answer.text }}
+                <ng-container *ngIf="!answer.isImpossible">
+                  {{ answer.text }}
+                </ng-container>
+                <ng-container *ngIf="answer.isImpossible">
+                  <strong>بدون پاسخ است.</strong>
+                </ng-container>
               </p>
               <mat-action-row>
                 <button mat-stroked-button color="warn" (click)="remove(i)">

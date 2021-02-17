@@ -18,7 +18,12 @@
               <br />
               <strong>{{ answer.question }}</strong>
               <p>
-                {{ answer.answer }}
+                <ng-container *ngIf="!answer.isImpossible">
+                  {{ answer.answer }}
+                </ng-container>
+                <ng-container *ngIf="answer.isImpossible">
+                  <strong>بدون پاسخ است.</strong>
+                </ng-container>
               </p>
             </mat-expansion-panel>
           </mat-accordion>
