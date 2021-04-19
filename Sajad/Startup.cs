@@ -34,11 +34,6 @@ namespace Sajad
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.Configure<FormOptions>(x =>
-            {
-                x.ValueLengthLimit = int.MaxValue;
-                x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
-            });
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SajadDbContext>();
@@ -94,16 +89,6 @@ namespace Sajad
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.Configuration["Token:Key"]))
                 };
-            });
-
-            services.Configure<IISServerOptions>(options =>
-            {
-                options.MaxRequestBodySize = int.MaxValue;
-            });
-
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.Limits.MaxRequestBodySize = int.MaxValue; 
             });
 
             services.AddTransient<DbContextSeeder>();
